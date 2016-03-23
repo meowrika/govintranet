@@ -58,18 +58,8 @@ remove_filter('pre_get_posts', 'filter_search');
 					endif;
 					?>
 				<?php the_content(); ?>
+				<?php get_template_part("part", "downloads"); ?>			
 				<?php
-				$current_attachments = get_field('document_attachments');
-				if ($current_attachments){
-					echo "<div class='alert alert-info'>";
-					echo "<h3>" . _x('Downloads' , 'Documents to download' , 'govintranet') . " <i class='glyphicon glyphicon-download'></i></h3>";
-					foreach ($current_attachments as $ca){
-						$c = $ca['document_attachment'];
-						if ( isset($c['title']) ) echo "<p><a class='alert-link' href='".$c['url']."'>".$c['title']."</a></p>";
-					}
-					echo "</div>";
-				}				
-				
 				if ('open' == $post->comment_status) {
 					 comments_template( '', true ); 
 				}
@@ -78,8 +68,9 @@ remove_filter('pre_get_posts', 'filter_search');
 		</div> <!--end of first column-->
 		<div class="col-lg-4  col-md-4 col-sm-4 col-lg-offset-1">	
 			<?php
-
 			get_template_part("part", "sidebar");
+
+		 	dynamic_sidebar('news-widget-area'); 
 
 			$post_cat = get_the_terms($post->ID,'news-update-type');
 			if ($post_cat){
@@ -90,7 +81,7 @@ remove_filter('pre_get_posts', 'filter_search');
 					if ( !$catTitlePrinted ){
 						$catTitlePrinted = true;
 					}
-					$html.= "<span class='wptag'><a href='".get_term_link($cat->slug,'news-update-type')."'>".str_replace(" ","&nbsp;",$cat->name)."</a></span> ";
+					$html.= "<span><a  class='wptag' href='".get_term_link($cat->slug,'news-update-type')."'>".str_replace(" ","&nbsp;",$cat->name)."</a></span> ";
 					}
 				}	
 				if ( $html ){
@@ -98,7 +89,21 @@ remove_filter('pre_get_posts', 'filter_search');
 				}
 			}
 
-		 	dynamic_sidebar('news-widget-area'); 
+			$posttags = get_the_tags();
+			if ( $posttags ) {
+				$foundtags=false;	
+				$tagstr="";
+			  	foreach( $posttags as $tag ) {
+		  			$foundtags=true;
+		  			$tagurl = $tag->term_id;
+			    	$tagstr=$tagstr."<span><a class='label label-default' href='".get_tag_link($tagurl)."?type=news-update'>" . str_replace(' ', '&nbsp' , $tag->name) . '</a></span> '; 
+			  	}
+			  	if ( $foundtags ){
+				  	echo "<div class='widget-box'><h3>" . __('Tags' , 'govintranet') . "</h3><p> "; 
+				  	echo $tagstr;
+				  	echo "</p></div>";
+			  	}
+			}
 
 		 	wp_reset_postdata();
 			wp_reset_query();

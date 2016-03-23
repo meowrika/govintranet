@@ -9,9 +9,15 @@ Author URI: http://www.helpfultechnology.com
 */
 
 class htNewsUpdates extends WP_Widget {
-    function htNewsUpdates() {
-        parent::WP_Widget(false, __('HT News Updates','govintranet'), array('description' => __('News Updates widget','govintranet')));
 
+	function __construct() {
+		
+		parent::__construct(
+			'htNewsUpdates',
+			__( 'HT News Updates' , 'govintranet'),
+			array( 'description' => __( 'News Updates widget' , 'govintranet') )
+		);   
+		
 		acf_add_local_field_group(array (
 			'key' => 'group_558c858e438b9',
 			'title' => _x('Update types','Categories of news updates','govintranet'),
@@ -160,8 +166,6 @@ class htNewsUpdates extends WP_Widget {
 		//display need to know stories
 		$acf_key = "widget_" . $this->id_base . "-" . $this->number . "_news_update_widget_include_type" ;  
 		$news_update_types = get_option($acf_key); ;
-		if ($icon=='') $icon = get_option('options_need_to_know_icon');
-		if ($icon=='') $icon = "flag";
 
 		$acf_key = "widget_" . $this->id_base . "-" . $this->number . "_news_update_background_colour" ;  
 		$background_colour = get_option($acf_key); 
@@ -229,19 +233,19 @@ class htNewsUpdates extends WP_Widget {
 
 		while ($news->have_posts()) {
 				$news->the_post();
-			if (in_array($post->ID, $alreadydone )) { //don't show if already in stickies
+			if (in_array($news->ID, $alreadydone )) { //don't show if already in stickies
 				continue;
 			}
 			$k++;
 			if ($k > $items){
 				break;
 			}
-			$thistitle = get_the_title($post->ID);
+			$thistitle = get_the_title($news->ID);
 
-			$thisURL=get_permalink($post->ID);
+			$thisURL=get_permalink($news->ID);
 			$display_types = '';
 			$display_types = array();
-			$types_array = get_the_terms($post->ID, 'news-update-type'); 
+			$types_array = get_the_terms($news->ID, 'news-update-type'); 
 			if ( $types_array ) foreach ( $types_array as $t ){
 					$display_types[] = $t->name;
 					$icon = get_option('news-update-type_'.$t->term_id.'_news_update_icon'); 
@@ -263,7 +267,7 @@ class htNewsUpdates extends WP_Widget {
 			if ( is_array($news_update_types) && count($news_update_types) < 2 ): 
 				$term = intval($news_update_types[0]); 
 				$landingpage = get_term_link($term, 'news-update-type'); 
-				echo '<p class="more-updates"><a title="'.$landingpage_link_text.'" class="small" href="'.$landingpage.'">'.$moretitle.'</a> <span class="dashicons dashicons-arrow-right-alt2"></span></p>';	
+				echo '<p class="more-updates"><a title="'.$moretitle.'" class="small" href="'.$landingpage.'">'.$moretitle.'</a> <span class="dashicons dashicons-arrow-right-alt2"></span></p>';	
 			else: 
 				$landingpage_link_text = $moretitle;
 				$landingpage = site_url().'/news-update/';
@@ -299,7 +303,7 @@ class htNewsUpdates extends WP_Widget {
           <input class="widefat" id="<?php echo $this->get_field_id('items'); ?>" name="<?php echo $this->get_field_name('items'); ?>" type="text" value="<?php echo $items; ?>" /><br><br>
 
           <label for="<?php echo $this->get_field_id('moretitle'); ?>"><?php _e('Title for more:','govintranet'); ?></label> 
-          <input class="widefat" id="<?php echo $this->get_field_id('mroetitle'); ?>" name="<?php echo $this->get_field_name('moretitle'); ?>" type="text" value="<?php echo $moretitle; ?>" /><br><?php echo __('Leave blank for the default title','govintranet') . '<br>' ; ?>
+          <input class="widefat" id="<?php echo $this->get_field_id('moretitle'); ?>" name="<?php echo $this->get_field_name('moretitle'); ?>" type="text" value="<?php echo $moretitle; ?>" /><br><?php echo __('Leave blank for the default title','govintranet') . '<br>' ; ?>
           
         </p>
 

@@ -9,8 +9,14 @@ Author URI: http://www.helpfultechnology.com
 */
 
 class htIntraverts extends WP_Widget {
-    function htIntraverts() {
-        parent::WP_Widget(false, __('HT Intraverts','govintranet'), array('description' => __('Displays an individual spot from a selection of spots and hides from user if already viewed','govintranet')));
+
+	function __construct() {
+		
+		parent::__construct(
+			'htIntraverts',
+			__( 'HT Intraverts' , 'govintranet'),
+			array( 'description' => __( 'Displays an individual intravert from a bank of intraverts and hides from user if already viewed' , 'govintranet') )
+		);   
 
 		/*
 		Load css
@@ -580,13 +586,13 @@ function ht_intraverts_ajax_show() {
 		$destination = get_post_meta(get_the_id(),'intravert_destination_page',true);
 		if ($destination) { $destination = get_permalink($destination[0]); } else { $destination="#nowhere"; }
 		if (has_post_thumbnail($post->ID)):
-			$html.= "<a href='".$destination."' onclick='pauseIntravert(\"ht_intravert_".get_the_id()."\",".$icookie.",\"".$post->post_title."\",\"".$originaltitle."\");'> ";
-			$html.= get_the_post_thumbnail(get_the_id(),'large',array('class'=>'img-responsive'));
+			$html.= "<a href='".$destination."' onclick='pauseIntravert(\"ht_intravert_".get_the_id()."\",".$icookie.",\"".esc_attr($post->post_title)."\",\"".esc_attr($originaltitle)."\");'> ";
+			$html.= get_the_post_thumbnail(get_the_id(),'full',array('class'=>'img-responsive'));
 			$html.= "</a>";
 		endif;
 		$html.= apply_filters("the_content",get_the_content());
 		if (get_post_meta(get_the_id(),'intravert_link_text',true)):
-			$html.= "<a id='intravert_hook_".$widget_id."' class='btn btn-info filter_results' href='".$destination."' onclick='pauseIntravert(\"ht_intravert_".get_the_id()."\",".$icookie.",\"".$post->post_title."\",\"".$originaltitle."\");'> ";
+			$html.= "<a id='intravert_hook_".$widget_id."' class='btn btn-info filter_results' href='".$destination."' onclick='pauseIntravert(\"ht_intravert_".get_the_id()."\",".$icookie.",\"".esc_attr($post->post_title)."\",\"".esc_attr($originaltitle)."\");'> ";
 			$html.= get_post_meta(get_the_id(),'intravert_link_text',true);
 			if ( $destination != '#nowhere' ) $html.= " <span class='dashicons dashicons-arrow-right-alt2'></span>";
 			$html.= "</a> ";

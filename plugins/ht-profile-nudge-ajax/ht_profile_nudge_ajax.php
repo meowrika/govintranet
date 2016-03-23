@@ -9,8 +9,14 @@ Author URI: http://www.helpfultechnology.com
 */
 
 class htProfileNudgeajax extends WP_Widget {
-    function htProfileNudgeajax() {
-        parent::WP_Widget(false, __('HT Profile Nudge AJAX','govintranet'), array('description' => __('Display reminders to complete missing staff profile entries using AJAX.','govintranet')));
+
+	function __construct() {
+		
+		parent::__construct(
+			'htProfileNudgeajax',
+			__( 'HT Profile Nudge AJAX' , 'govintranet'),
+			array( 'description' => __( 'Display reminders to complete missing staff profile entries using AJAX.' , 'govintranet') )
+		);   
     }
 
     function widget($args, $instance) {
@@ -362,7 +368,7 @@ function ht_profile_nudge_ajax_show() {
 			</div>
 			";	
 			$html.= $after_widget; 	
-		elseif ( !get_user_meta($userid,'wp_user_avatar',true) && !isset($_COOKIE['ht_profile_nudge_photo']) && $photo == 'on' ):
+		elseif ( !get_user_meta($userid,'wp_user_avatar',true) && !get_user_meta($userid,'simple_local_avatar',true) && !isset($_COOKIE['ht_profile_nudge_photo']) && $photo == 'on' ):
 			/******************************************
 			*
 			* UPDATE AVATAR

@@ -89,18 +89,9 @@ $mainid=$post->ID;
 		</div>
 	<?php 
 	endif;
-
-	$current_attachments = get_field('document_attachments');
-	if ($current_attachments){
-		echo "<div class='alert alert-info'>";
-		echo "<h3>" . _x('Downloads' , 'Documents to download' , 'govintranet') . " <i class='glyphicon glyphicon-download'></i></h3>";
-		foreach ($current_attachments as $ca){
-			$c = $ca['document_attachment'];
-			if ( isset($c['title']) ) echo "<p><a class='alert-link' href='".$c['url']."'>".$c['title']."</a></p>";
-		}
-		echo "</div>";
-	}				
-	
+	?>
+	<?php get_template_part("part", "downloads"); ?>			
+	<?php
 	if ('open' == $post->comment_status) {
 		 comments_template( '', true ); 
 	}
@@ -151,10 +142,12 @@ $mainid=$post->ID;
 		</div>
 	<?php endif; 
 	
-	get_template_part("part", "related");
-
 	get_template_part("part", "sidebar");
 
+ 	dynamic_sidebar('events-widget-area'); 
+
+	get_template_part("part", "related");
+ 	
 	$post_cat = get_the_terms($post->ID, 'event-type' ); 
 	if ($post_cat){
 		$html='';
@@ -173,7 +166,7 @@ $mainid=$post->ID;
 		$tagstr="";
 	  	foreach($posttags as $tag) { 
 	  			$foundtags=true;
-	  			$tagurl = $tag->slug;
+	  			$tagurl = $tag->term_id;
 		    	$tagstr=$tagstr."<span><a class='label label-default' href='".get_tag_link($tagurl) . "?type=event'>" . str_replace(' ', '&nbsp' , $tag->name) . '</a></span> '; 
 	  	}
 	  	if ($foundtags){
@@ -183,7 +176,7 @@ $mainid=$post->ID;
 	  	}
 	}
 
- 	dynamic_sidebar('events-widget-area'); 
+
  	
  	wp_reset_postdata();
 	?>

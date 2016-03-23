@@ -4,7 +4,7 @@ Plugin Name: HT Zero Hits Monitor
 Plugin URI: http://www.helpfultechnology.com
 Description: Widget to display least active pages
 Author: Luke Oatham
-Version: 1.0 beta
+Version: 1.0
 Author URI: http://www.helpfultechnology.com
 */
 
@@ -13,18 +13,6 @@ add_action('admin_menu', 'ht_zero_hits_menu');
 function ht_zero_hits_menu() {
   add_submenu_page('tools.php', __('Zero Hits Monitor','govintranet'), __('Zero Hits Monitor','govintranet'), 'manage_options', 'zero_hits', 'ht_zero_hits_options');
 }
-
-/*
-function diffInMonths( $date1,  $date2)
-{
-	$date1 = new DateTime($date1);
-	$date2 = new DateTime($date2);
-    $diff =  $date1->diff($date2);
-    $months = $diff->y * 12 + $diff->m + $diff->d / 30;
-    return (int) round($months);
-}
-*/
-
 
 function ht_zero_hits_options() {
 	wp_register_style( 'zero-hits-style2',  plugin_dir_url("/") . "ht-most-active/ht_zero_hits.css" );
@@ -131,7 +119,7 @@ function ht_zero_hits_options() {
 
 	if ($_REQUEST['action'] == "generate") {
 
-		$tzone = get_option('tim ezone_string');
+		$tzone = get_option('timezone_string');
 		date_default_timezone_set($tzone);
     
 		echo "<a class='btn btn-primary' href='".admin_url('/tools.php?page=zero_hits')."'>".__('Dashboard','govintranet')."</a></td>";
@@ -218,50 +206,50 @@ function ht_zero_hits_options() {
 			if ( $allposts->have_posts()) while ( $allposts->have_posts()){
 				$allposts->the_post(); 
 				$style = " class='success'";
-				$style6m = " class='text-success'";
-				$style1y = " class='text-success'";
+				$style6m = " class='text-success cellcenter'";
+				$style1y = " class='text-success cellcenter'";
 				$stylemdate = " class='success'";
-				if ( get_post_meta(get_the_id(), 'zh_total_6m', true) == 0 ) { $style6m = " class='text-danger'"; $style = " class='warning text-warning'"; }
-				if ( get_post_meta(get_the_id(), 'zh_total_1y', true) == 0 ) { $style1y = " class='text-danger'"; $style = " class='danger text-danger'"; }
+				if ( get_post_meta(get_the_id(), 'zh_total_6m', true) == 0 ) { $style6m = " class='text-danger cellcenter'"; $style = " class='warning text-warning'"; }
+				if ( get_post_meta(get_the_id(), 'zh_total_1y', true) == 0 ) { $style1y = " class='text-danger cellcenter'"; $style = " class='danger text-danger'"; }
 				$tdate = date('Ymd');
-				if ( get_the_modified_date('Ymd') < date('Ymd', strtotime('-6 months ' . $tdate))) { $stylemdate = " class='warning'"; }
-				if ( get_the_modified_date('Ymd') < date('Ymd', strtotime('-12 months ' . $tdate))) { $stylemdate = " class='danger'"; }
+				if ( get_the_modified_date('Ymd') < date('Ymd', strtotime('-6 months ' . $tdate))) { $stylemdate = " class='warning cellcenter'"; }
+				if ( get_the_modified_date('Ymd') < date('Ymd', strtotime('-12 months ' . $tdate))) { $stylemdate = " class='danger cellcenter'"; }
 				echo "<tr>";
-				$fig=" class='success'";
-				if ( !get_post_meta(get_the_id(), 'zh_month_12', true) ) $fig = " class='danger'";
+				$fig=" class='success cellcenter'";
+				if ( !get_post_meta(get_the_id(), 'zh_month_12', true) ) $fig = " class='danger cellcenter'";
 				echo "<td".$fig.">".get_post_meta(get_the_id(), 'zh_month_12', true)."</td>";
-				$fig=" class='success'";
-				if ( !get_post_meta(get_the_id(), 'zh_month_11', true) ) $fig = " class='danger'";
+				$fig=" class='success cellcenter'";
+				if ( !get_post_meta(get_the_id(), 'zh_month_11', true) ) $fig = " class='danger cellcenter'";
 				echo "<td".$fig.">".get_post_meta(get_the_id(), 'zh_month_11', true)."</td>";
-				$fig=" class='success'";
-				if ( !get_post_meta(get_the_id(), 'zh_month_10', true) ) $fig = " class='danger'";
+				$fig=" class='success cellcenter'";
+				if ( !get_post_meta(get_the_id(), 'zh_month_10', true) ) $fig = " class='danger cellcenter'";
 				echo "<td".$fig.">".get_post_meta(get_the_id(), 'zh_month_10', true)."</td>";
-				$fig=" class='success'";
-				if ( !get_post_meta(get_the_id(), 'zh_month_9', true) ) $fig = " class='danger'";
+				$fig=" class='success cellcenter'";
+				if ( !get_post_meta(get_the_id(), 'zh_month_9', true) ) $fig = " class='danger cellcenter'";
 				echo "<td".$fig.">".get_post_meta(get_the_id(), 'zh_month_9', true)."</td>";
-				$fig=" class='success'";
-				if ( !get_post_meta(get_the_id(), 'zh_month_8', true) ) $fig = " class='danger'";
+				$fig=" class='success cellcenter'";
+				if ( !get_post_meta(get_the_id(), 'zh_month_8', true) ) $fig = " class='danger cellcenter'";
 				echo "<td".$fig.">".get_post_meta(get_the_id(), 'zh_month_8', true)."</td>";
-				$fig=" class='success'";
-				if ( !get_post_meta(get_the_id(), 'zh_month_7', true) ) $fig = " class='danger'";
+				$fig=" class='success cellcenter'";
+				if ( !get_post_meta(get_the_id(), 'zh_month_7', true) ) $fig = " class='danger cellcenter'";
 				echo "<td".$fig.">".get_post_meta(get_the_id(), 'zh_month_7', true)."</td>";
-				$fig=" class='success'";
-				if ( !get_post_meta(get_the_id(), 'zh_month_6', true) ) $fig = " class='danger'";
+				$fig=" class='success cellcenter'";
+				if ( !get_post_meta(get_the_id(), 'zh_month_6', true) ) $fig = " class='danger cellcenter'";
 				echo "<td".$fig.">".get_post_meta(get_the_id(), 'zh_month_6', true)."</td>";
-				$fig=" class='success'";
-				if ( !get_post_meta(get_the_id(), 'zh_month_5', true) ) $fig = " class='danger'";
+				$fig=" class='success cellcenter'";
+				if ( !get_post_meta(get_the_id(), 'zh_month_5', true) ) $fig = " class='danger cellcenter'";
 				echo "<td".$fig.">".get_post_meta(get_the_id(), 'zh_month_5', true)."</td>";
-				$fig=" class='success'";
-				if ( !get_post_meta(get_the_id(), 'zh_month_4', true) ) $fig = " class='danger'";
+				$fig=" class='success cellcenter'";
+				if ( !get_post_meta(get_the_id(), 'zh_month_4', true) ) $fig = " class='danger cellcenter'";
 				echo "<td".$fig.">".get_post_meta(get_the_id(), 'zh_month_4', true)."</td>";
-				$fig=" class='success'";
-				if ( !get_post_meta(get_the_id(), 'zh_month_3', true) ) $fig = " class='danger'";
+				$fig=" class='success cellcenter'";
+				if ( !get_post_meta(get_the_id(), 'zh_month_3', true) ) $fig = " class='danger cellcenter'";
 				echo "<td".$fig.">".get_post_meta(get_the_id(), 'zh_month_3', true)."</td>";
-				$fig=" class='success'";
-				if ( !get_post_meta(get_the_id(), 'zh_month_2', true) ) $fig = " class='danger'";
+				$fig=" class='success cellcenter'";
+				if ( !get_post_meta(get_the_id(), 'zh_month_2', true) ) $fig = " class='danger cellcenter'";
 				echo "<td".$fig.">".get_post_meta(get_the_id(), 'zh_month_2', true)."</td>";
-				$fig=" class='success'";
-				if ( !get_post_meta(get_the_id(), 'zh_month_1', true) ) $fig = " class='danger'";
+				$fig=" class='success cellcenter'";
+				if ( !get_post_meta(get_the_id(), 'zh_month_1', true) ) $fig = " class='danger cellcenter'";
 				echo "<td".$fig.">".get_post_meta(get_the_id(), 'zh_month_1', true)."</td>";
 				if ( $show != "6m" && $show != "1y" ) echo "<td".$style6m.">".get_post_meta(get_the_id(), 'zh_total_6m', true)."</td>";
 				if ( $show != "1y" ) echo "<td".$style1y.">".get_post_meta(get_the_id(), 'zh_total_1y', true)."</td>";
@@ -288,7 +276,7 @@ function ht_zero_hits_options() {
 			 <form method='post'>
 			 	<p><label for='url'>View ID</label> <input type='text' name='viewid' value='".get_option('options_zh_viewid')."'></p>
 			 	<p><label for='zh_date_format'>Date format</label> <input type='text' name='zh_date_format' value='".get_option('options_zh_date_format')."'></p>
-			 	<p><label for='ptype'>Post types</label></p>
+			 	<p><label for='ptype'>Content types</label></p>
 			";			 	
 				echo'<p><label class="checkbox"><input type="checkbox" name="ptype[]" value="page"';
 				if(in_array('page', $posttypeoptions)){ 
@@ -332,17 +320,10 @@ function ht_zero_hits_options() {
 		update_option('options_zh_date_format', $zh_date_format);
 		
 		echo "<p>Settings updated!</p>";
-		// Schedule Cron Job Event
 		
 		if ($reset == "reset"):
-			global $wpdb;
-			$wpdb->query(
-				"
-				DELETE from $wpdb->postmeta 
-				WHERE meta_key = 'zh_last_processed'; 
-				"
-			);
-			echo "<p>" . __('The Zero Hits patrol has been rescheduled','govintranet') . "</p>";
+			delete_zh_meta('0');
+			echo "<p>" . __('The Zero Hits report has been reset','govintranet') . "</p>";
 		endif;
 				
 	} 
@@ -358,9 +339,45 @@ function ht_zero_hits_options() {
   
 }
 
+function delete_zh_meta($postid){
+	global $wpdb;
+	if ( !$postid > 0 ):
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_last_processed';");
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_month_1';");
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_month_2';");
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_month_3';");
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_month_4';");
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_month_5';");
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_month_6';");
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_month_7';");
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_month_8';");
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_month_9';");
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_month_10';");
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_month_11';");
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_month_12';");
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_total_1y';");
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_total_6m';");
+	else:
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_last_processed' and post_id = ".$postid);	 
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_month_1' and post_id = ".$postid);	
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_month_2' and post_id = ".$postid);	
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_month_3' and post_id = ".$postid);	
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_month_4' and post_id = ".$postid);	
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_month_5' and post_id = ".$postid);	
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_month_6' and post_id = ".$postid);	
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_month_7' and post_id = ".$postid);	
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_month_8' and post_id = ".$postid);	
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_month_9' and post_id = ".$postid);	
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_month_10' and post_id = ".$postid);	 
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_month_11' and post_id = ".$postid);	
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_month_12' and post_id = ".$postid);	
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_total_1y' and post_id = ".$postid);	
+		$wpdb->query("DELETE from $wpdb->postmeta WHERE meta_key = 'zh_total_6m' and post_id = ".$postid);	 
+	endif;
+}
 
 function zero_hits_monitor(){
-	update_option('zh_patrol_start', date('H:i:s') );
+	update_option('zh_patrol_start', date('H:i:s j M Y') );
 	
 	$viewid = get_option('options_zh_viewid'); 
 	$ptype = get_option('options_zh_post_types'); 
@@ -428,6 +445,7 @@ function zero_hits_monitor(){
 					),
 					array(
 					'key' => 'zh_last_processed',
+					'value' => '',
 					'compare' => "NOT EXISTS",
 					),
 				),
@@ -458,7 +476,6 @@ function zero_hits_monitor(){
 			        'filters' 	 => $filter,
 			    ); print_r($defaults);
 			    $ga->setDefaultQueryParams($defaults);
-
 			    $visits = $ga->query($params); 
 			
 				if ( $visits ) foreach($visits as $r=>$result) {
@@ -481,33 +498,36 @@ function zero_hits_monitor(){
 					if ( !$finalset[get_the_id()][$i] ) $finalset[get_the_id()][$i] = 0;
 				}
 				$end_date = date ( 'Y-m-d', strtotime ( '-1 day' . $start_date ) );
-				$month_slot ++;
+				$month_slot++;
 				$finalset[get_the_id()][13] = $u;
-	
-				//tot up figures for the past 12 months
-				$finalset[get_the_id()][0] = $finalset[get_the_id()][1]+$finalset[get_the_id()][2]+$finalset[get_the_id()][3]+$finalset[get_the_id()][4]+$finalset[get_the_id()][5]+$finalset[get_the_id()][6]+$finalset[get_the_id()][7]+$finalset[get_the_id()][8]+$finalset[get_the_id()][9]+$finalset[get_the_id()][10]+$finalset[get_the_id()][11]+$finalset[get_the_id()][12];
 	
 				//tot up figures for the past 6 months
 				$finalset[get_the_id()][14] = $finalset[get_the_id()][1]+$finalset[get_the_id()][2]+$finalset[get_the_id()][3]+$finalset[get_the_id()][4]+$finalset[get_the_id()][5]+$finalset[get_the_id()][6];
-	
-				update_post_meta(get_the_id() , 'zh_last_processed', date('Ymd') );
-				update_post_meta(get_the_id() , 'zh_month_1', $finalset[get_the_id()][1] );
-				update_post_meta(get_the_id() , 'zh_month_2', $finalset[get_the_id()][2] );
-				update_post_meta(get_the_id() , 'zh_month_3', $finalset[get_the_id()][3] );
-				update_post_meta(get_the_id() , 'zh_month_4', $finalset[get_the_id()][4] );
-				update_post_meta(get_the_id() , 'zh_month_5', $finalset[get_the_id()][5] );
-				update_post_meta(get_the_id() , 'zh_month_6', $finalset[get_the_id()][6] );
-				update_post_meta(get_the_id() , 'zh_month_7', $finalset[get_the_id()][7] );
-				update_post_meta(get_the_id() , 'zh_month_8', $finalset[get_the_id()][8] );
-				update_post_meta(get_the_id() , 'zh_month_9', $finalset[get_the_id()][9] );
-				update_post_meta(get_the_id() , 'zh_month_10', $finalset[get_the_id()][10] );
-				update_post_meta(get_the_id() , 'zh_month_11', $finalset[get_the_id()][11] );
-				update_post_meta(get_the_id() , 'zh_month_12', $finalset[get_the_id()][12] );
-				update_post_meta(get_the_id() , 'zh_total_1y', $finalset[get_the_id()][0] );
-				update_post_meta(get_the_id() , 'zh_total_6m', $finalset[get_the_id()][14] );
+
+				//tot up figures for the past 12 months
+				$finalset[get_the_id()][0] = $finalset[get_the_id()][14]+$finalset[get_the_id()][7]+$finalset[get_the_id()][8]+$finalset[get_the_id()][9]+$finalset[get_the_id()][10]+$finalset[get_the_id()][11]+$finalset[get_the_id()][12];
+				$postid = get_the_id();
+
+				delete_zh_meta($postid);
+				update_post_meta($postid , 'zh_last_processed', date('Ymd') );
+				update_post_meta($postid , 'zh_month_1', $finalset[$postid][1] );
+				update_post_meta($postid , 'zh_month_2', $finalset[$postid][2] );
+				update_post_meta($postid , 'zh_month_3', $finalset[$postid][3] );
+				update_post_meta($postid , 'zh_month_4', $finalset[$postid][4] );
+				update_post_meta($postid , 'zh_month_5', $finalset[$postid][5] );
+				update_post_meta($postid , 'zh_month_6', $finalset[$postid][6] );
+				update_post_meta($postid , 'zh_month_7', $finalset[$postid][7] );
+				update_post_meta($postid , 'zh_month_8', $finalset[$postid][8] );
+				update_post_meta($postid , 'zh_month_9', $finalset[$postid][9] );
+				update_post_meta($postid , 'zh_month_10', $finalset[$postid][10] );
+				update_post_meta($postid , 'zh_month_11', $finalset[$postid][11] );
+				update_post_meta($postid , 'zh_month_12', $finalset[$postid][12] );
+				update_post_meta($postid , 'zh_total_1y', $finalset[$postid][0] );
+				update_post_meta($postid , 'zh_total_6m', $finalset[$postid][14] );
+				
 			}
 		}
-		update_option('zh_patrol_end', date('H:i') );
+		update_option('zh_patrol_end', date('H:i j M Y') );
 	} else {
 		update_option('zh_patrol_end', 'an error. Google Analytics authentication needs updating!');
 	}
@@ -529,12 +549,16 @@ function zh_dashboard() {
 }
 
 function zh_show_dashboard() {
+	if (!current_user_can('manage_options'))  {
+		wp_die( __('You do not have sufficient permissions to access this page.','govintranet') );
+	}
+
 	$posttypes = get_option('options_zh_post_types');
 	$inq = 0;
 	echo "<table class='table table-striped'>
 	<thead>
 	<tr>
-	<td>" . __('Post type','govintranet') . "</td>
+	<td>" . __('Content type','govintranet') . "</td>
 	<td>" . __('6 months','govintranet') . "</td>
 	<td>" . __('1 year','govintranet') . "</td>
 	<td>" . __('Patrol','govintranet') . "</td>

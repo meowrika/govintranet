@@ -4,73 +4,99 @@ Plugin Name: HT Feature blogposts
 Plugin URI: http://www.helpfultechnology.com
 Description: Display blogposts
 Author: Luke Oatham
-Version: 0.1
+Version: 1.1
 Author URI: http://www.helpfultechnology.com
-
-#23-oct-2015
-Pin posts added
 
 */
 
 class htFeatureBlogposts extends WP_Widget {
-    function htFeatureBlogposts() {
-        parent::WP_Widget(false, __('HT Feature blogposts','govintranet'), array('description' => __('Blogpost listing widget','govintranet')));
+
+	function __construct() {
+		
+		parent::__construct(
+			'htFeatureBlogposts',
+			__( 'HT Feature blogposts' , 'govintranet'),
+			array( 'description' => __( 'Blogpost listing widget' , 'govintranet') )
+		);        
+		
 		if( function_exists('acf_add_local_field_group') ):
 
-		acf_add_local_field_group(array (
-			'key' => 'group_562a555eac132',
-			'title' => __('Feature blog widget','govintranet'),
-			'fields' => array (
-				array (
-					'key' => 'field_562a555eb8501',
-					'label' => _x('Pin posts','Make stories sticky and appear at the top','govintranet'),
-					'name' => 'pin_posts',
-					'type' => 'relationship',
-					'instructions' => '',
-					'required' => 0,
-					'conditional_logic' => 0,
-					'wrapper' => array (
-						'width' => '',
-						'class' => '',
-						'id' => '',
-					),
-					'post_type' => array (
-						0 => 'news',
-						1 => 'blog',
-						2 => 'event',
-					),
-					'taxonomy' => array (
-					),
-					'filters' => array (
-						0 => 'search',
-						1 => 'post_type',
-					),
-					'elements' => '',
-					'min' => '',
-					'max' => '',
-					'return_format' => 'id',
-				),
-			),
-			'location' => array (
-				array (
+			acf_add_local_field_group(array (
+				'key' => 'group_562a555eac132',
+				'title' => 'Feature blog widget',
+				'fields' => array (
 					array (
-						'param' => 'widget',
-						'operator' => '==',
-						'value' => 'htfeatureblogposts',
+						'key' => 'field_562a555eb8501',
+						'label' => 'Pin posts',
+						'name' => 'pin_posts',
+						'type' => 'relationship',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array (
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'post_type' => array (
+							0 => 'news',
+							1 => 'blog',
+							2 => 'event',
+						),
+						'taxonomy' => array (
+						),
+						'filters' => array (
+							0 => 'search',
+							1 => 'post_type',
+						),
+						'elements' => '',
+						'min' => '',
+						'max' => '',
+						'return_format' => 'id',
+					),
+					array (
+						'key' => 'field_56b9356df717b',
+						'label' => 'Blog categories',
+						'name' => 'blog_categories',
+						'type' => 'taxonomy',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array (
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'taxonomy' => 'blog-category',
+						'field_type' => 'checkbox',
+						'allow_null' => 1,
+						'add_term' => 0,
+						'save_terms' => 0,
+						'load_terms' => 0,
+						'return_format' => 'id',
+						'multiple' => 0,
 					),
 				),
-			),
-			'menu_order' => 0,
-			'position' => 'normal',
-			'style' => 'seamless',
-			'label_placement' => 'top',
-			'instruction_placement' => 'label',
-			'hide_on_screen' => '',
-			'active' => 1,
-			'description' => '',
-		));
-		
-		endif;		
+				'location' => array (
+					array (
+						array (
+							'param' => 'widget',
+							'operator' => '==',
+							'value' => 'htfeatureblogposts',
+						),
+					),
+				),
+				'menu_order' => 0,
+				'position' => 'normal',
+				'style' => 'seamless',
+				'label_placement' => 'top',
+				'instruction_placement' => 'label',
+				'hide_on_screen' => '',
+				'active' => 1,
+				'description' => '',
+			));
+			
+			endif;	
 	
     }
 
@@ -80,6 +106,7 @@ class htFeatureBlogposts extends WP_Widget {
         $items = intval($instance['items']);
         $thumbnails = $instance['thumbnails'];
         $freshness = $instance['freshness'];
+        if ( !$freshness ) $freshness = 14;
         $more = $instance['more'];
         $excerpt = $instance['excerpt'];
 		$tdate=date('Y-m-d')." 00:00";
@@ -87,6 +114,8 @@ class htFeatureBlogposts extends WP_Widget {
         $tdate = date ( 'F jS, Y', strtotime ( $freshness . $tdate ) );  
 		$acf_key = "widget_" . $this->id_base . "-" . $this->number . "_pin_posts" ;  
 		$top_slot = get_option($acf_key); 
+		$acf_key = "widget_" . $this->id_base . "-" . $this->number . "_blog_categories" ;  
+		$blog_categories = get_option($acf_key); 
 		$num_top_slots = 0;
 		if ( is_array($top_slot) ) $num_top_slots = count($top_slot); 
 		$to_fill = $items - $num_top_slots;
@@ -154,6 +183,15 @@ class htFeatureBlogposts extends WP_Widget {
 					)
 				)
 		);
+		
+		//restrict to chosen categories, if any
+		if ( $blog_categories )
+				$cquery['tax_query'] = array(array(
+				    'taxonomy' => 'blog-category',
+				    'field' => 'id',
+				    'terms' => (array)$blog_categories,
+				    'compare' => "IN",
+			    ));
 
 		$news =new WP_Query($cquery);
 		if ($news->post_count!=0 && !$titledone ) {
@@ -174,10 +212,10 @@ class htFeatureBlogposts extends WP_Widget {
 			$thistitle = get_the_title($post->ID);
 			$edate = $post->post_date;
 			$edate = date(get_option('date_format'),strtotime($edate));
-			$thisURL=get_permalink($ID); 
+			$thisURL=get_permalink($id); 
 			echo "<div class='media'>";
 			if ($thumbnails=='on'){
-				$image_uri =  wp_get_attachment_image_src( get_post_thumbnail_id( $ID ), 'thumbnail' ); 
+				$image_uri =  wp_get_attachment_image_src( get_post_thumbnail_id( $id ), 'thumbnail' ); 
 				if (!$image_uri){
 					$image_uri = get_avatar($post->post_author,72);
 					$image_uri = str_replace("alignleft", "alignleft tinyblogthumb", $image_uri);

@@ -18,6 +18,7 @@ Intranet theme inspired by GOV.UK. Custom post types: news, blog, events, tasks 
 
 * Tasks & Guides
 * Projects
+* Teams 
 * Vacancies
 * News
 * News updates 
@@ -36,6 +37,56 @@ Refer to [showcase site](https://govintranet.helpfulclients.com/) for example in
 Refer to [Setup instructions](http://govintranetters.helpfulclients.com) for help and installation instructions.
 
 ## Changelog ##
+
+### 4.9.5.1 - 4 Mar 2016 ###
+* Timezone corrections 
+* Priority change to sidebar elements 
+* Jumbo search box correction 
+* Various code fixes 
+
+### 4.9.5 - 4 Mar 2016 ###
+* Attachment downloads on page template 
+* Fix for tags showing empty pages  
+
+### 4.9.4 - 27 Feb 2016 ###
+* Removed direct support for WP User Avatar 
+* Improved inline CSS  
+* Aggregator template updates to events and news 
+* Feature news widget first large image now a link 
+* Intravert updates for responsive images 
+* Profile nudge updates to support Simple Local Avatar   
+
+### 4.9.3 - 18 Feb 2016 ###
+* Language updates 
+* Core theme tidy 
+* Search autocomplete fix 
+
+### 4.9.2 - 14 Feb 2016 ###
+* Bug fix for admin bulk edits 
+* New format for vacancy and events widgets  
+* HT Notify widget - sends emails for updated pages to subscribed users 
+* HT Favourites widget - allows users to add favourite pages 
+
+### 4.9.1 - 9 Feb 2016 ###
+* Added tags to news updates 
+* Blog category integrated into templates 
+* Fixes for tags 
+* Fixes for events template 
+
+### 4.9 - 29 Jan 2016 ###
+* Fix for Breadcrumb NavXT forcing post_type on category URLs 
+* Newsboard template - create your own tabs for the news page 
+* About template has a new column option 
+* Blog category introduced 
+* New option for Manuals in tasks and guides - create your own accordions 
+* Updated plugins 
+* Various bugfixes and style changes 
+
+### 4.8 - 11 Dec 2015 ###
+* WYSIWYG option for forums 
+* Snow plugin 
+* Favourites plugin 
+* Zero Hits plugin 
 
 ### 4.7.4 - 9 Dec 2015 ###
 * Translation updates 
